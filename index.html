@@ -158,9 +158,9 @@
 
         /* ============ PRODUCTS ============ */
 
-         #products {
+        #products {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 20px;
         }
 
@@ -174,7 +174,7 @@
         @media (max-width: 768px) {
 
             #products {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(3, 1fr);
             }
 
             .card {
@@ -188,10 +188,6 @@
             button {
                 width: 100%;
             }
-        }
-
-        .card {
-            width: 100%;
         }
 
         .card {
@@ -426,11 +422,11 @@
 
                 <input type="file" onchange="uploadPic(this)">
 
-                <input id="accName" placeholder="Full Name">
-                <input id="accPhone" placeholder="Phone">
-                <input id="accShop" placeholder="Shop">
-
-                <textarea id="accAddress" placeholder="Address"></textarea>
+                <input type="text" id="accName" placeholder="Name">
+                <input type="text" id="accPhone" placeholder="Phone">
+                <input type="email" id="accEmail" placeholder="Email">
+                <input type="text" id="accShop" placeholder="Shop Name">
+                <input type="text" id="accAddress" placeholder="Address">
 
                 <button onclick="saveAccount()">Save / Update</button>
                 <hr style="margin:15px 0;">
@@ -657,9 +653,17 @@
             orders.push(order);
             localStorage.setItem("leoOrders", JSON.stringify(orders));
 
+            let accData = JSON.parse(localStorage.getItem("leoAccount")) || {};
+
             let message = `Hello Nagarjuna Reddy,%0A%0A`;
             message += `New Order from LEO Store%0A%0A`;
-            message += `Customer: ${localStorage.getItem("leoUser")}%0A%0AItems:%0A`;
+
+            message += `Customer: ${localStorage.getItem("leoUser")}%0A`;
+            message += `Shop Name: ${accData.shop || "Not Provided"}%0A`;
+            message += `Mobile: ${accData.phone || "Not Provided"}%0A`;
+            message += `Email: ${accData.email || "Not Provided"}%0A%0A`;
+
+            message += `Items:%0A`;
 
             cart.forEach((item, i) => {
                 message += `${i + 1}) ${item.name} (${item.size}) - ₹${item.price} x ${item.qty} = ₹${item.total}%0A`;
@@ -738,11 +742,22 @@
         window.onload = function () {
             loadOrderHistory();
         };
+        function saveAccount() {
 
+            const data = {
+                name: document.getElementById("accName").value,
+                phone: document.getElementById("accPhone").value,
+                email: document.getElementById("accEmail").value,
+                shop: document.getElementById("accShop").value,
+                address: document.getElementById("accAddress").value
+            };
+
+            localStorage.setItem("leoAccount", JSON.stringify(data));
+
+            alert("Account Details Saved Successfully!");
+
+        }
     </script>
 </body>
 
 </html>
-
-
-
