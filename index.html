@@ -160,8 +160,13 @@
 
         #products {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
+            padding: 10px;
+        }
+
+        .card {
+            width: 100%;
         }
 
         .card {
@@ -582,8 +587,9 @@
             let price = product.price;
             let size = "Standard";
 
+            // Correct select targeting
             if (product.sizes) {
-                const select = document.querySelectorAll("select")[index];
+                let select = document.querySelector(`#products .card:nth-child(${index + 1}) select`);
                 price = Number(select.value);
                 size = select.options[select.selectedIndex].text;
             }
@@ -599,9 +605,9 @@
             });
 
             localStorage.setItem("leoCart", JSON.stringify(cart));
-            alert("Added to Cart");
-        }
 
+            alert("Successfully Added to Cart ✅");
+        }
         /* Place Order */
         function placeOrder() {
 
